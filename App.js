@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -14,9 +14,18 @@ import {
   Image,
   ActivityIndicator
 } from 'react-native';
+import Placeholder from 'rn-placeholder';
 
+const words = [
+  {
+    width: '30%',
+  },
+  {
+    width: '70%',
+  },
+];
 
-export default class App extends Component<{}> {
+export default class App extends PureComponent<{}> {
 
 
   constructor(props) {
@@ -44,15 +53,31 @@ export default class App extends Component<{}> {
     fetch(url)
       .then(res => res.json())
       .then(res => {
-        console.log('====================================');
-        console.log('makeRemoteRequest res: ', res);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log('makeRemoteRequest res: ', res);
+        // console.log('====================================');
+        
+        // unshow place holder
         this.setState({
           data: page === 1 ? res.results : [...this.state.data, ...res.results],
           error: res.error || null,
           loading: false,
           refreshing: false
         });
+
+        // show place holder
+        // this.setState({
+        //   data: page === 1 ? res.results : [...this.state.data, ...res.results],
+        //   error: res.error || null,
+        //   // loading: false,
+        //   // refreshing: false
+        // }, (() => {
+        //   this.setState({
+        //     loading: false,
+        //     refreshing: false
+        //   })
+        // }));
+
       })
       .catch(error => {
         this.setState({ error, loading: false });
@@ -61,11 +86,15 @@ export default class App extends Component<{}> {
 
 
   render() {
+    const { data, loading } = this.state;
+    // console.log('====================================');
+    // console.log('render loading: ', loading);
+    // console.log('====================================');
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.state.data}
-          renderItem={({ item }) => this.renderRow(item)}
+          data={data}
+          renderItem={this.renderRow}
           keyExtractor={item => item.email}
           ItemSeparatorComponent={this.renderSeparator}
           // ListHeaderComponent={this.renderHeader}
@@ -73,7 +102,9 @@ export default class App extends Component<{}> {
           onRefresh={this.handleRefresh}
           refreshing={this.state.refreshing}
           onEndReached={this.handleLoadMore}
+        // numColumns={2}
         // onEndReachedThreshold={50}
+        // extraData={loading}
         />
       </View>
     );
@@ -92,10 +123,12 @@ export default class App extends Component<{}> {
     );
   };
 
-  renderRow = (item) => {
+  renderRow = ({ item }) => {
+    const { loading } = this.state;
     // console.log('====================================');
-    // console.log('renderRow item: ', item);
+    // console.log('renderRow !loading: ', !loading);
     // console.log('====================================');
+
     return (
       <View style={styles.rowWrapper}>
         <View style={styles.avatarWrapper}>
@@ -119,6 +152,38 @@ export default class App extends Component<{}> {
         </View>
       </View>
     )
+
+
+
+    return (
+      <View style={styles.rowWrapper}>
+        <Placeholder.MultiWords onReady={!loading} words={words} animate="fade">
+          <View style={styles.rowWrapper}>
+            <View style={styles.avatarWrapper}>
+              <Image
+                style={styles.avatar}
+                source={{ uri: item.picture.large ? item.picture.large : 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+              />
+            </View>
+            <View style={styles.contentWrapper}>
+              <View style={styles.titleWrapper}>
+                <View style={styles.firstName}>
+                  <Text style={styles.contentText}>{item.name.first + " "}</Text>
+                </View>
+                <View style={styles.lastName}>
+                  <Text style={styles.contentText}>{item.name.last}</Text>
+                </View>
+              </View>
+              <View style={styles.subTitleWrapper}>
+                <Text style={styles.contentText}>{item.email}</Text>
+              </View>
+            </View>
+          </View>
+        </Placeholder.MultiWords>
+      </View>
+
+    )
+
   }
 
   renderFooter = () => {
@@ -179,7 +244,7 @@ const styles = StyleSheet.create({
     flex: 0.3,
     justifyContent: 'center',
     alignItems: 'center',
-    
+
   },
   contentWrapper: {
     // backgroundColor: 'blue',
