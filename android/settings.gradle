@@ -1,0 +1,3 @@
+rootProject.name = 'RNFlatList'
+
+include ':app'
