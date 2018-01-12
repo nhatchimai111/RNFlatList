@@ -129,6 +129,7 @@ export default class App extends PureComponent<{}> {
     // console.log('renderRow !loading: ', !loading);
     // console.log('====================================');
 
+    //unshow placeholder
     return (
       <View style={styles.rowWrapper}>
         <View style={styles.avatarWrapper}>
@@ -154,35 +155,35 @@ export default class App extends PureComponent<{}> {
     )
 
 
+    //show placeholder
+    // return (
+    //   <View style={styles.rowWrapper}>
+    //     <Placeholder.MultiWords onReady={!loading} words={words} animate="fade">
+    //       <View style={styles.rowWrapper}>
+    //         <View style={styles.avatarWrapper}>
+    //           <Image
+    //             style={styles.avatar}
+    //             source={{ uri: item.picture.large ? item.picture.large : 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+    //           />
+    //         </View>
+    //         <View style={styles.contentWrapper}>
+    //           <View style={styles.titleWrapper}>
+    //             <View style={styles.firstName}>
+    //               <Text style={styles.contentText}>{item.name.first + " "}</Text>
+    //             </View>
+    //             <View style={styles.lastName}>
+    //               <Text style={styles.contentText}>{item.name.last}</Text>
+    //             </View>
+    //           </View>
+    //           <View style={styles.subTitleWrapper}>
+    //             <Text style={styles.contentText}>{item.email}</Text>
+    //           </View>
+    //         </View>
+    //       </View>
+    //     </Placeholder.MultiWords>
+    //   </View>
 
-    return (
-      <View style={styles.rowWrapper}>
-        <Placeholder.MultiWords onReady={!loading} words={words} animate="fade">
-          <View style={styles.rowWrapper}>
-            <View style={styles.avatarWrapper}>
-              <Image
-                style={styles.avatar}
-                source={{ uri: item.picture.large ? item.picture.large : 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
-              />
-            </View>
-            <View style={styles.contentWrapper}>
-              <View style={styles.titleWrapper}>
-                <View style={styles.firstName}>
-                  <Text style={styles.contentText}>{item.name.first + " "}</Text>
-                </View>
-                <View style={styles.lastName}>
-                  <Text style={styles.contentText}>{item.name.last}</Text>
-                </View>
-              </View>
-              <View style={styles.subTitleWrapper}>
-                <Text style={styles.contentText}>{item.email}</Text>
-              </View>
-            </View>
-          </View>
-        </Placeholder.MultiWords>
-      </View>
-
-    )
+    // )
 
   }
 
